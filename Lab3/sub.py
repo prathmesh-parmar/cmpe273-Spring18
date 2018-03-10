@@ -14,7 +14,6 @@ push = context.socket(zmq.PUSH)
 # Define subscription and messages with prefix to accept.
 sub.setsockopt_string(zmq.SUBSCRIBE, "1")
 sub.connect("tcp://127.0.0.1:5681")
-
 push.connect("tcp://127.0.0.1:5680")
 
 class display(threading.Thread):
