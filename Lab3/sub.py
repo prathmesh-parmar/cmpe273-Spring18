@@ -12,27 +12,32 @@ sub = context.socket(zmq.SUB)
 push = context.socket(zmq.PUSH)
 
 # Define subscription and messages with prefix to accept.
-sub.setsockopt_string(zmq.SUBSCRIBE, "1")
+sub.setsockopt_string(zmq.SUBSCRIBE, "")
 sub.connect("tcp://127.0.0.1:5681")
+
 push.connect("tcp://127.0.0.1:5680")
 
-class display(threading.Thread):
+class messageDisplay(threading.Thread):
     def __init__(self):
       threading.Thread.__init__(self)
     
     def run(self):
         while(True):
-            data=sub.recv()
-            data=data.decode('utf-8').split(">>")
-            if(data[1].strip()!=name):
-                print(data[1]+":"+data[2])
+            data=str(sub.recv())
+            data = data.split(',')
+            name = str(data[0])
+            message = str(data[1])
+            name = name[2:]
+            i = len(message)
+            message = message[:(i-1)]
+            print ("[" + name+"]"+" "+ message)
             time.sleep(1)
-d=display()
-d.start()
+thread=messageDisplay()
+thread.start()
 
 name=sys.argv[1]
 
 while (True):
     message=input("["+name+"]>")
-    data={'name':name,'message':message}
-    push.send_json(data)
+    full_message = name +"," +message
+    push.send_string(full_message)
