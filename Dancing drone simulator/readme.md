@@ -56,7 +56,12 @@ The simulator has two components:
  ``
  [received] moving to [10, 0, 0]
  ``
- 
+
+## Getting user inputs and forwarding to drones
+When user enters a new coordinate in the server window, the server will forward new coordinates to all drones. You need to support for two drones in this assignment. Then, each client window will be prompted with new coordinate.
+
+# Client
+Each drone will act as a client which will be listening new coordinates from the server. The server to client communication is one-way (GRPC) streaming and the client will never send any messages back to the server.
 
 ## Steps for running the application
 1. Clone the repository.
