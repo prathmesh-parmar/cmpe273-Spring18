@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+message Empty{
+    
+}
+
+message Response{
+    int32 _x = 1;
+    int32 _y = 2;
+    int32 _z = 3;
+}
+
+service drone{
+    rpc newCoordinates (Empty) returns (stream Response) {}
+}
